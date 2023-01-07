@@ -20,7 +20,10 @@ websocket echo
 
     ws.onmessage = (event) => {
         const message = event.data;
+        const obj = JSON.parse(message);
+
         console.log("received message: ", message);
+        console.log(obj);
     };
 
     ws.onerror = () => {
