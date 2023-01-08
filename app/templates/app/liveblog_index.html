@@ -10,3 +10,40 @@
         </div>
     </div>
 {% endblock %}
+
+{% block extra-body %}
+
+    <script>
+        const handlers = {
+            ws: null,
+            connect(ws_url) {
+                this.ws = new WebSocket(ws_url);
+
+                this.ws.onopen = this.onopen.bind(this);
+                this.ws.onclose = this.onclose.bind(this);
+                this.ws.onerror = this.onerror.bind(this);
+                this.ws.onmessage = this.onmessage.bind(this);
+            },
+            onopen() {
+                console.log("connected to websocket server")
+            },
+            onclose(event) {
+                if (!event.wasClean) {
+                    console.error("websocket server closed or error")
+                }
+            },
+            onerror() {
+                console.error("websocket server error")
+            },
+            onmessage(event) {
+                const message_json = event.data;
+                console.log("websocket text message received :", message_json)
+            }
+        }
+
+        const ws_url = "ws://localhost:8000/ws/liveblog/";
+        handlers.connect(ws_url);
+
+    </script>
+
+{% endblock %}
