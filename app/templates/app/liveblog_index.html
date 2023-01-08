@@ -79,7 +79,7 @@
                     })
             },
             post_deleted(post_id) {
-                const css_selector = `[data-post-id]="${post_id}"]`;
+                const css_selector = `[data-post-id="${post_id}"]`;
                 document.querySelector(css_selector).remove();
             }
         }
