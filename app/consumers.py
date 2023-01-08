@@ -1,30 +1,27 @@
 import json
 
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer, JsonWebsocketConsumer
 
 
-class EchoConsumer(WebsocketConsumer):
+class EchoConsumer(JsonWebsocketConsumer):
 
-    def receive(self, text_data=None, bytes_data=None):
-        obj = json.loads(text_data)
-        print("received: ", obj)
+    def receive_json(self, content, **kwargs):
+        print("received: ", content)
 
-        json_string: str = json.dumps({
-            "content": obj["content"],
-            "user": obj["user"]
+        self.send_json({
+            "content": content["content"],
+            "user": content["user"]
         })
-        # self.send(f"You said: {text_data}")
-        self.send(json_string)
 
 
-class LiveblogConsumer(WebsocketConsumer):
+class LiveblogConsumer(JsonWebsocketConsumer):
     groups = ["liveblog"]
 
     def liveblog_post_created(self, event_dict):
-        self.send(json.dumps(event_dict))
+        self.send_json(event_dict)
 
     def liveblog_post_updated(self, event_dict):
-        self.send(json.dumps(event_dict))
+        self.send_json(event_dict)
 
     def liveblog_post_deleted(self, event_dict):
-        self.send(json.dumps(event_dict))
+        self.send_json(event_dict)
