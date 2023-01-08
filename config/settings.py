@@ -25,7 +25,6 @@ if env_path.exists():
     with env_path.open(encoding="utf8") as f:
         env.read_env(f, overwrite=True)
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -50,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_bootstrap5',
     'app',
+    'chat',
 ]
 
 MIDDLEWARE = [
