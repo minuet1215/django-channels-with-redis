@@ -16,20 +16,38 @@
     <script>
         const handlers = {
             ws: null,
+            retry: 0,
             connect(ws_url) {
-                this.ws = new WebSocket(ws_url);
+                this.ws = new WebSocket(ws_url || this.ws?.url);
 
                 this.ws.onopen = this.onopen.bind(this);
                 this.ws.onclose = this.onclose.bind(this);
                 this.ws.onerror = this.onerror.bind(this);
                 this.ws.onmessage = this.onmessage.bind(this);
             },
+
+            reconnect() {
+                this.connect();
+            },
+
             onopen() {
-                console.log("connected to websocket server")
+                console.log("connected to websocket server");
+                this.retry = 0;
             },
             onclose(event) {
                 if (!event.wasClean) {
-                    console.error("websocket server closed or error")
+                    console.error("websocket server closed or error");
+
+                    if (this.retry < 3) {
+                        this.retry++;
+                        setTimeout(() => {
+                            this.reconnect();
+                            console.log(`[${this.retry}] try reconnect`);
+                        }, 1000 * this.retry);
+                    } else {
+                        alert("웹소켓 서버 접속 불가. 메인 페이지로 이동합니다.");
+                        window.location.href = "/";
+                    }
                 }
             },
             onerror() {
