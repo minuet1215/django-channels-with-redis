@@ -15,3 +15,16 @@ class EchoConsumer(WebsocketConsumer):
         })
         # self.send(f"You said: {text_data}")
         self.send(json_string)
+
+
+class LiveblogConsumer(WebsocketConsumer):
+    groups = ["liveblog"]
+
+    def liveblog_post_created(self, event_dict):
+        self.send(json.dumps(event_dict))
+
+    def liveblog_post_updated(self, event_dict):
+        self.send(json.dumps(event_dict))
+
+    def liveblog_post_deleted(self, event_dict):
+        self.send(json.dumps(event_dict))
