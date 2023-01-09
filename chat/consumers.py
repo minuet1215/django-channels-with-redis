@@ -12,6 +12,7 @@ class ChatConsumer(JsonWebsocketConsumer):
         if _type == "chat.message":
             message = content["message"]
             async_to_sync(self.channel_layer.group_send)(
+                self.SQUARE_GROUP_NAME,
                 {
                     "type": "chat.message",
                     "message": message,
