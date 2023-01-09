@@ -7,7 +7,7 @@ class ChatConsumer(JsonWebsocketConsumer):
     groups = [SQUARE_GROUP_NAME]
 
     def receive_json(self, content, **kwargs):
-        _type = content('type')
+        _type = content['type']
 
         if _type == "chat.message":
             message = content["message"]
@@ -19,7 +19,7 @@ class ChatConsumer(JsonWebsocketConsumer):
                 }
             )
         else:
-            print(f"Invalid message type : {_type}")
+            print(f"Invalid message type : ${_type}")
 
     def chat_message(self, message_dict):
         self.send_json({

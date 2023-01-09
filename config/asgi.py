@@ -23,7 +23,7 @@ application = ProtocolTypeRouter({
     "http": django_asgi_app,
 
     "websocket": URLRouter(
-        app.routing.websocket_urlpatterns,
-        chat.routing.websocket_urlpatterns,
+        app.routing.websocket_urlpatterns +
+        chat.routing.websocket_urlpatterns
     ),
 })
