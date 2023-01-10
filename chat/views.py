@@ -5,7 +5,11 @@ from chat.models import Room
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    return render(request, "chat/index.html")
+    room_queryset = Room.objects.all()
+
+    return render(request, "chat/index.html", {
+        "room_list": room_queryset
+    })
 
 
 def room_chat(request, room_pk):
