@@ -1,0 +1,21 @@
+{% extends "chat/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <h2>Create New Chat Room</h2>
+
+    <div class="my-3">
+        <form action="" method="post">
+            {% csrf_token %}
+
+            {% bootstrap_form form %}
+            <input type="submit" value="Create" class="btn btn-primary"/>
+        </form>
+    </div>
+
+    <a href="{% url 'chat:index' %}" class="btn btn-primary">
+        Back
+    </a>
+
+    <a href="{% url 'chat:room_new' %}">Create New Chat Room</a>
+{% endblock %}
