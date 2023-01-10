@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>websocket echo</title>
+</head>
+<body>
+
+websocket echo
+
+<script>
+    const ws = new WebSocket("ws://localhost:8000/ws/echo/");
+
+    ws.onopen = () => {
+        console.log("connected to websocket server");
+    };
+
+    ws.onmessage = (event) => {
+        const message = event.data;
+        const obj = JSON.parse(message);
+
+        console.log("received message: ", message);
+        console.log(obj);
+    };
+
+    ws.onerror = () => {
+        console.log("websocket server error");
+    };
+
+    ws.onclose = (event) => {
+        if (event.wasClean) {
+            console.log("disconnected by ws.close()");
+        } else {
+            console.log("websocket server connection Dead");
+        }
+    }
+
+</script>
+</body>
+</html>

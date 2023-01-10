@@ -1,11 +1,13 @@
 # coding: utf-8
 
-Django ~= 4.1.5
+Django ~= 4.1.0
 channels[daphne] ~= 4.0.0
 
 channels_redis ~= 4.0.0
 
 redis != 4.4.0
+
+django-redis ~= 5.2.0
 
 django-environ
 
