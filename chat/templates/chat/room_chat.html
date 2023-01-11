@@ -47,6 +47,27 @@
                 <hr class="my-3"/>
 
                 <a href="{% url 'chat:index' %}" class="btn btn-primary">대기실로 이동</a>
+                {% if request.user == room.owner %}
+                    <a href="{% url 'chat:room_delete' room.pk %}" class="btn btn-danger">
+                        채팅방 삭제하기
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">알림</h1>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">OK</button>
+                </div>
             </div>
         </div>
     </div>
@@ -146,6 +167,21 @@
                     type: "chat.message",
                     message: message,
                 }))
+            },
+            modal(message, ok_handler) {
+                const modal_ele = document.querySelector("#staticBackdrop");
+                const body_ele = modal_ele.querySelector(".modal-body");
+                const button_ele = modal_ele.querySelector(".modal-footer button");
+
+                body_ele.textContent = message;
+
+                button_ele.addEventListener("click", () => {
+                    if (ok_handler) ok_handler();
+                    modal.hide();
+                });
+
+                const modal = new bootstrap.Modal(modal_ele);
+                modal.show();
             }
         };
 

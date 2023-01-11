@@ -1,7 +1,14 @@
+from django.conf import settings
 from django.db import models
 
 
 class Room(models.Model):
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="owned_root_set",
+    )
+
     name = models.CharField(max_length=100)
 
     @property
