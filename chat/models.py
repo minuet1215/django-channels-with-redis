@@ -1,5 +1,8 @@
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_delete
 
 
 class Room(models.Model):
@@ -21,3 +24,20 @@ class Room(models.Model):
 
     class Meta:
         ordering = ['-pk']
+
+
+def room__on_post_delete(instance: Room, **kwargs):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        instance.chat_group_name,
+        {
+            "type": "chat.room.deleted",
+        },
+    )
+
+
+post_delete.connect(
+    room__on_post_delete,
+    sender=Room,
+    dispatch_uid='room__on_post_delete',
+)
