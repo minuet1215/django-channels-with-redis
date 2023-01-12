@@ -18,6 +18,7 @@ class ChatConsumer(JsonWebsocketConsumer):
 
         else:
             room_pk = self.scope["url_route"]["kwargs"]["room_pk"]
+
             try:
                 self.room = Room.objects.get(pk=room_pk)
             except Room.DoesNotExist:
@@ -34,7 +35,12 @@ class ChatConsumer(JsonWebsocketConsumer):
                         }
                     )
 
-            self.accept()
+                async_to_sync(self.channel_layer.group_add)(
+                    self.group_name,
+                    self.channel_name
+                )
+
+                self.accept()
 
     def disconnect(self, code):
         if self.group_name:
