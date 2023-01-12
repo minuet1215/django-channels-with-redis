@@ -8,6 +8,7 @@ class ChatConsumer(JsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(args, kwargs)
         self.group_name = ""
+        self.room = None
 
     def connect(self):
         user = self.scope["user"]
